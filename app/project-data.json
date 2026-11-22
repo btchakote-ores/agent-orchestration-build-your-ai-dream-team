@@ -1,0 +1,43 @@
+{
+  "projects": [
+    {
+      "name": "Docs Refresh",
+      "owner": "Mona",
+      "status": "On track",
+      "recentActivity": "Merged navigation redesign PR",
+      "priority": "High",
+      "summary": "Rewriting contributor docs so new folks ship in a day."
+    },
+    {
+      "name": "Mobile Onboarding",
+      "owner": "Alex",
+      "status": "At risk",
+      "recentActivity": "Usability test surfaced two blocking issues in sign-up",
+      "priority": "High",
+      "summary": "Simplifying the first-run experience on iOS and Android."
+    },
+    {
+      "name": "Billing Migration",
+      "owner": "Priya",
+      "status": "Blocked",
+      "recentActivity": "Waiting on vendor API credentials",
+      "priority": "Medium",
+      "summary": "Moving invoices to the new payments provider."
+    },
+    {
+      "name": "Design Tokens",
+      "owner": "Mona",
+      "status": "Completed",
+      "recentActivity": "Published v1.0 token package",
+      "priority": "Low",
+      "summary": "Shared colors, spacing and type scale across all apps."
+    },
+    {
+      "name": "Search Improvements",
+      "owner": "Sam",
+      "status": "On track",
+      "recentActivity": "Shipped fuzzy matching behind a feature flag",
+      "priority": "Medium"
+    }
+  ]
+}

@@ -1,0 +1,494 @@
+/* ==========================================================================
+   Project Pulse — dashboard styles
+   Owner: Designer. Follows the CSS class contract in docs/project-pulse-plan.md.
+   No external fonts or CDNs. All text/background pairs target WCAG AA (>= 4.5:1).
+   ========================================================================== */
+
+/* ---------- Design tokens ---------- */
+:root {
+  color-scheme: light;
+
+  /* Surfaces & text */
+  --color-page: #f3f4f8;
+  --color-surface: #ffffff;
+  --color-surface-quiet: #fafbfc;
+  --color-border: #e2e5ec;
+  --color-text: #1b1f2a;          /* ~15.8:1 on white */
+  --color-text-muted: #4b5466;    /* ~7.4:1 on white */
+  --color-text-subtle: #5d6678;   /* ~5.9:1 on white */
+
+  /* Brand / header band */
+  --color-brand-900: #1e1b4b;
+  --color-brand-700: #3730a3;
+  --color-brand-200: #c7d2fe;     /* ~10:1 on brand-900 */
+  --color-accent: #4f46e5;
+  --color-focus: #2563eb;
+
+  /* Status badges (text on tinted bg, all >= 7:1) */
+  --status-on-track-bg: #dcfce7;  --status-on-track-fg: #14532d;  --status-on-track-dot: #16a34a;
+  --status-at-risk-bg: #fef3c7;   --status-at-risk-fg: #78350f;   --status-at-risk-dot: #d97706;
+  --status-blocked-bg: #fee2e2;   --status-blocked-fg: #7f1d1d;   --status-blocked-dot: #dc2626;
+  --status-completed-bg: #dbeafe; --status-completed-fg: #1e3a8a; --status-completed-dot: #2563eb;
+  --status-unknown-bg: #e5e7eb;   --status-unknown-fg: #374151;   --status-unknown-dot: #6b7280;
+
+  /* Priority */
+  --priority-high-bg: #9f1239;    --priority-high-fg: #ffffff;    /* ~8:1 */
+  --priority-high-accent: #e11d48;
+  --priority-medium-bg: #ede9fe;  --priority-medium-fg: #4c1d95;  /* ~9:1 */
+  --priority-medium-accent: #8b5cf6;
+  --priority-low-bg: #f1f5f9;     --priority-low-fg: #475569;     /* ~6.9:1 */
+  --priority-low-accent: #cbd5e1;
+  --priority-unknown-bg: #ffffff; --priority-unknown-fg: #374151;
+
+  /* Messages */
+  --message-error-bg: #fef2f2;  --message-error-fg: #7f1d1d;  --message-error-border: #fca5a5;
+  --message-empty-bg: #f8fafc;  --message-empty-fg: #334155;  --message-empty-border: #cbd5e1;
+
+  /* Spacing scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* Shadows (layered for depth) */
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.08);
+  --shadow-md: 0 2px 4px rgba(16, 24, 40, 0.06), 0 6px 16px rgba(16, 24, 40, 0.08);
+  --shadow-lg: 0 4px 8px rgba(16, 24, 40, 0.08), 0 16px 32px rgba(16, 24, 40, 0.12);
+  --shadow-header: 0 10px 30px rgba(30, 27, 75, 0.25);
+
+  /* Type */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-3xl: clamp(1.75rem, 1.2rem + 2.4vw, 2.5rem);
+
+  --content-max: 1200px;
+  --transition: 160ms ease;
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-page);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden; /* safety net for 320px viewports */
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+/* Visible keyboard focus everywhere */
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- Dashboard shell ---------- */
+.dashboard {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-5) var(--space-7);
+}
+
+.dashboard-header {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: var(--space-6);
+  padding: var(--space-6) var(--space-6);
+  border-radius: var(--radius-lg);
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 90% -20%, rgba(129, 140, 248, 0.45), transparent 55%),
+    linear-gradient(135deg, var(--color-brand-900) 0%, var(--color-brand-700) 100%);
+  box-shadow: var(--shadow-header);
+}
+
+/* Small "pulse" mark before the title — decorative only */
+.dashboard-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-3xl);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-title::before {
+  content: "";
+  flex: none;
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 0 0.18em rgba(52, 211, 153, 0.3);
+}
+
+.dashboard-subtitle {
+  margin-top: var(--space-2);
+  max-width: 60ch;
+  font-size: var(--text-lg);
+  color: var(--color-brand-200);
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Card grid ---------- */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---------- Project card ---------- */
+.project-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* allow long text to wrap inside grid tracks */
+  padding: var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.project-card > article {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  height: 100%;
+  min-width: 0;
+}
+
+.project-card:hover,
+.project-card:focus-within {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.project-name {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+.project-owner {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.project-summary {
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+.project-activity {
+  margin-top: auto; /* pin activity to the card bottom for even rows */
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  background: var(--color-page);
+  border-radius: var(--radius-sm);
+  overflow-wrap: anywhere;
+}
+
+.project-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.project-label {
+  display: block;
+  margin-bottom: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+/* ---------- Badges (shared) ---------- */
+.status-badge,
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  max-width: 100%;
+  padding: 0.25em 0.7em;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Status badges: tinted pill + colored dot; the text carries the meaning */
+.status-badge::before {
+  content: "";
+  flex: none;
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status--on-track {
+  color: var(--status-on-track-fg);
+  background: var(--status-on-track-bg);
+  border-color: rgba(22, 163, 74, 0.35);
+}
+.status--on-track::before { background: var(--status-on-track-dot); }
+
+.status--at-risk {
+  color: var(--status-at-risk-fg);
+  background: var(--status-at-risk-bg);
+  border-color: rgba(217, 119, 6, 0.4);
+}
+.status--at-risk::before { background: var(--status-at-risk-dot); }
+
+.status--blocked {
+  color: var(--status-blocked-fg);
+  background: var(--status-blocked-bg);
+  border-color: rgba(220, 38, 38, 0.35);
+}
+.status--blocked::before { background: var(--status-blocked-dot); }
+
+.status--completed {
+  color: var(--status-completed-fg);
+  background: var(--status-completed-bg);
+  border-color: rgba(37, 99, 235, 0.35);
+}
+.status--completed::before { background: var(--status-completed-dot); }
+
+.status--unknown {
+  color: var(--status-unknown-fg);
+  background: var(--status-unknown-bg);
+  border-color: rgba(107, 114, 128, 0.4);
+}
+.status--unknown::before { background: var(--status-unknown-dot); }
+
+/* Priority badges: squarer shape so they read differently from status */
+.priority-badge {
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.priority--high {
+  color: var(--priority-high-fg);
+  background: var(--priority-high-bg);
+}
+
+.priority--medium {
+  color: var(--priority-medium-fg);
+  background: var(--priority-medium-bg);
+  border-color: rgba(139, 92, 246, 0.35);
+}
+
+.priority--low {
+  color: var(--priority-low-fg);
+  background: var(--priority-low-bg);
+  border-color: var(--color-border);
+  font-weight: 600;
+}
+
+.priority--unknown {
+  color: var(--priority-unknown-fg);
+  background: var(--priority-unknown-bg);
+  border: 1px dashed #6b7280;
+}
+
+/* ---------- Priority treatment on cards ---------- */
+/* High: accent left border + tinted top edge so it stands out in the grid */
+.project-card--priority-high,
+.project-card:has(.priority--high) {
+  border-left-color: var(--priority-high-accent);
+  background:
+    linear-gradient(180deg, rgba(225, 29, 72, 0.06) 0%, rgba(225, 29, 72, 0) 90px),
+    var(--color-surface);
+  box-shadow: var(--shadow-md), 0 0 0 1px rgba(225, 29, 72, 0.12);
+}
+
+.project-card--priority-medium,
+.project-card:has(.priority--medium) {
+  border-left-color: var(--priority-medium-accent);
+}
+
+/* Low: visually quieter — flatter shadow, neutral accent, softer surface.
+   Text colors are unchanged so contrast stays AA. */
+.project-card--priority-low,
+.project-card:has(.priority--low) {
+  border-left-color: var(--priority-low-accent);
+  background: var(--color-surface-quiet);
+  box-shadow: var(--shadow-sm);
+}
+
+.project-card--priority-unknown,
+.project-card:has(.priority--unknown) {
+  border-left-style: dashed;
+  border-left-color: #9ca3af;
+}
+
+/* ---------- Loading / error / empty messages ---------- */
+.dashboard-message {
+  grid-column: 1 / -1; /* span the full grid if rendered inside it */
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow-wrap: anywhere;
+}
+
+.dashboard-message[hidden] {
+  display: none;
+}
+
+/* Default (loading) state gets a gentle pulsing dot */
+.dashboard-message:not(.dashboard-message--error):not(.dashboard-message--empty)::before {
+  content: "";
+  flex: none;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: var(--color-accent);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+.dashboard-message--error {
+  color: var(--message-error-fg);
+  background: var(--message-error-bg);
+  border-color: var(--message-error-border);
+  border-left: 5px solid #dc2626;
+}
+
+.dashboard-message--error::before {
+  content: "!";
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  background: #b91c1c;
+  border-radius: 50%;
+}
+
+.dashboard-message--empty {
+  justify-content: center;
+  padding: var(--space-7) var(--space-5);
+  text-align: center;
+  color: var(--message-empty-fg);
+  background: var(--message-empty-bg);
+  border: 2px dashed var(--message-empty-border);
+  box-shadow: none;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.75); }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  .dashboard {
+    padding: var(--space-3) var(--space-3) var(--space-6);
+  }
+
+  .dashboard-header {
+    margin-bottom: var(--space-5);
+    padding: var(--space-5) var(--space-4);
+    border-radius: var(--radius-md);
+  }
+
+  .dashboard-subtitle {
+    font-size: var(--text-base);
+  }
+
+  .project-grid {
+    grid-template-columns: 1fr; /* single column; avoids 280px min overflowing at 320px */
+    gap: var(--space-4);
+  }
+
+  .project-card {
+    padding: var(--space-4);
+  }
+}
+
+/* ---------- Motion & contrast preferences ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .project-card:hover,
+  .project-card:focus-within {
+    transform: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .status-badge,
+  .priority-badge,
+  .project-card,
+  .dashboard-message {
+    border: 1px solid CanvasText;
+  }
+}
